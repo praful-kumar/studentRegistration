@@ -24,15 +24,13 @@ public class StudentUpdateService {
         this.qualificationRepository = qualificationRepository;
     }
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    // Cron expression to run every 30 minutes
-    @Scheduled(cron = "0 0/1 * * * ?")
+
+    @Scheduled(cron = "0 0/5 * * * ?")
     public void updateStudentRecords() {
-        // Fetch employees, update the records, and save them
         log.info("Running scheduled task to update employee records...");
         studentRepository.findAll().forEach(student -> {
-            // Logic to update employee records
             String formattedDateTime = LocalDateTime.now().format(FORMATTER);
-            student.setLastUpdated(formattedDateTime);  // Example update
+            student.setLastUpdated(formattedDateTime);
             studentRepository.save(student);
             log.info("Updated student record :{}" , student.getId());
         });
